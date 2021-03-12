@@ -63,18 +63,40 @@ namespace Test1.Controllers
             return View(movie);
         }
 
-        //public ActionResult Edit()
-        //{
+        [HttpGet]
+        public ActionResult Edit(int id)
+        {
+            var movie = allmovies.Find(m => m.ID == id);
+            return View(movie);
+        }
+        [HttpPost]
+        public ActionResult Edit(Movie newMovie)
+        {
+            var oldMovieId = newMovie.ID;
+            var oldMovie = allmovies.Find(m => m.ID == oldMovieId);
+            allmovies.Remove(oldMovie);
+            allmovies.Add(newMovie);
+            return RedirectToAction("All");
+        }
 
-        //}
         //public ActionResult Delete()
         //{
 
         //}
-        //public ActionResult Create()
-        //{
 
-        //}
+        [HttpGet]
+        public ActionResult Create()
+        {
+            Movie m = new Movie();
+            return View(m);
+        }
+        [HttpPost]
+        public ActionResult Create(Movie m) //model binding
+        {
+            if (ModelState.IsValid)
+                allmovies.Add(m);
+            return View(m);
+        }
         // GET: Movies
         public ActionResult Index()
         {
